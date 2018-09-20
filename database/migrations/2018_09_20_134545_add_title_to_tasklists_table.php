@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTasklistsTable extends Migration
+class AddTitleToTasklistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateTasklistsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasklists', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('content');    // content カラム追加
-            $table->string('status');    // content カラム追加課題用
-            $table->timestamps();
+        Schema::table('tasklists', function (Blueprint $table) {
+            $table->string('status',10);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateTasklistsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasklists');
+        Schema::table('tasklists', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 }
