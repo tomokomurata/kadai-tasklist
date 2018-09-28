@@ -76,9 +76,13 @@ class TasklistsController extends Controller
     {
         $tasklist = Tasklist::find($id);
 
-        return view('tasklists.show', [
-            'tasklist' => $tasklist,
-        ]);
+        if (\Auth::id() === $tasklist->user_id) {
+            return view('tasklists.show', [
+              'tasklist' => $tasklist,
+             ]);
+         }
+
+         return redirect('/');
     }
 
     /**
@@ -90,10 +94,14 @@ class TasklistsController extends Controller
     public function edit($id)
     {
         $tasklist = Tasklist::find($id);
-
-        return view('tasklists.edit', [
-            'tasklist' => $tasklist,
-        ]);
+       
+        if (\Auth::id() === $tasklist->user_id) {
+             return view('tasklists.edit', [
+                'tasklist' => $tasklist,
+            ]);
+        }
+        
+        return redirect('/');
     }
 
     /**
@@ -110,9 +118,12 @@ class TasklistsController extends Controller
             'content' => 'required|max:191',
         ]);
         $tasklist = Tasklist::find($id);
+      
+        if (\Auth::id() === $tasklist->user_id) {
         $tasklist->status = $request->status; //追加
         $tasklist->content = $request->content;
         $tasklist->save();
+        }
 
         return redirect('/');
     }
